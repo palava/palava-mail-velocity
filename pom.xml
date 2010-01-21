@@ -15,5 +15,20 @@
           <artifactId>palava-mail</artifactId>
           <version>1.4-SNAPSHOT</version>
       </dependency>
+      <dependency>
+      	<groupId>org.apache.velocity</groupId>
+      	<artifactId>velocity</artifactId>
+      	<version>1.6.3</version>
+      </dependency>
+      <dependency>
+      	<groupId>commons-email</groupId>
+      	<artifactId>commons-email</artifactId>
+      	<version>1.1</version>
+      </dependency>
+      <dependency>
+      	<groupId>org.jdom</groupId>
+      	<artifactId>jdom</artifactId>
+      	<version>1.1</version>
+      </dependency>
   </dependencies>
 </project>
