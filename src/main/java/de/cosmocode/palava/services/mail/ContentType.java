@@ -21,6 +21,6 @@ package de.cosmocode.palava.services.mail;
 
 enum ContentType {
 
-	PLAIN, HTML;
-	
+    PLAIN, HTML;
+    
 }
