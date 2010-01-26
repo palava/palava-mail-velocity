@@ -49,7 +49,7 @@ import de.cosmocode.palava.services.mail.MailService;
  * @author Willi Schoenborn
  */
 @Singleton
-public class VelocityMailer implements MailService, Initializable {
+public class VelocityMailService implements MailService, Initializable {
 
     private static final Locale NO_LOCALE = null;
     
@@ -62,7 +62,7 @@ public class VelocityMailer implements MailService, Initializable {
     private final VelocityEngine engine = new VelocityEngine();
 
     @Inject
-    public VelocityMailer(
+    public VelocityMailService(
         @Named("mail.velocity.properties") File properties, 
         @Named("mail.velocity.hostname") String hostname) {
         this.properties = Preconditions.checkNotNull(properties, "Properties");
