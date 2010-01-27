@@ -40,7 +40,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
-import de.cosmocode.palava.core.framework.lifecycle.Initializable;
+import de.cosmocode.palava.core.lifecycle.Initializable;
 import de.cosmocode.palava.services.mail.MailService;
 
 /**
