@@ -48,7 +48,6 @@ import de.cosmocode.palava.services.mail.MailService;
  *
  * @author Willi Schoenborn
  */
-@Singleton
 public class VelocityMailService implements MailService, Initializable {
 
     private static final Locale NO_LOCALE = null;

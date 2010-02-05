@@ -10,7 +10,7 @@
   <groupId>de.cosmocode.palava.services</groupId>
   <artifactId>palava-mail-velocity</artifactId>
   <scm>
-  	<developerConnection>scm:svn:http://palava.svn.cosmocode.de/palava-mail-velocity/trunk</developerConnection>
+  	<developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-mail-velocity/trunk</developerConnection>
   </scm>
   <dependencies>
       <dependency>
