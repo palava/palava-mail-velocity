@@ -25,12 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Embedder {
     
-    private static final Logger log = Logger.getLogger(Embedder.class);
+    private static final Logger log = LoggerFactory.getLogger(Embedder.class);
 
     private final Map <String, String> embeddings = new HashMap<String, String>(); // mapping  path => cid
     private final List<String> filenames = new ArrayList<String>();
