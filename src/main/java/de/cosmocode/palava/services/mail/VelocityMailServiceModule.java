@@ -28,7 +28,7 @@ import com.google.inject.Singleton;
  *
  * @author Willi Schoenborn
  */
-public final class VelocityMailModule implements Module {
+public final class VelocityMailServiceModule implements Module {
 
     @Override
     public void configure(Binder binder) {

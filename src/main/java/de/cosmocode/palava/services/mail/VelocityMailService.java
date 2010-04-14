@@ -42,11 +42,11 @@ import com.google.inject.name.Named;
 import de.cosmocode.palava.core.lifecycle.Initializable;
 
 /**
- * 
+ * Velocity based implementation of the {@link MailService} interface.
  *
  * @author Willi Schoenborn
  */
-public class VelocityMailService implements MailService, Initializable {
+final class VelocityMailService implements MailService, Initializable {
 
     private static final Locale NO_LOCALE = null;
     
