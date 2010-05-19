@@ -28,7 +28,7 @@ public class EntityEncoder {
     }
     
     public String encode(String sourceString) {
-        return sourceString.
+        return sourceString == null ? "" : sourceString.
             replace("&",  "&amp;").
             replace(">",  "&gt;").
             replace("<",  "&lt;").
