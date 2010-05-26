@@ -28,6 +28,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
+import org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +39,11 @@ import java.util.Properties;
 /**
  * @author Tobias Sarnowski
  */
+// FIXME should be package private and final
 public class VelocityTemplateEngine implements TemplateEngine {
     private static final Logger LOG = LoggerFactory.getLogger(VelocityTemplateEngine.class);
 
+    // FIXME should be configurable
     public static final String ENCODING = "UTF-8";
 
     protected static final String K_SUBJECT = "subject";
@@ -50,13 +53,13 @@ public class VelocityTemplateEngine implements TemplateEngine {
     protected static final String K_ATTACHMENTS = "attachments";
 
     public VelocityTemplateEngine() {
-        Properties config = new Properties();
+        final Properties config = new Properties();
 
         // see http://velocity.apache.org/engine/devel/apidocs/org/apache/velocity/runtime/resource/loader/StringResourceLoader.html
         config.put("resource.loader", "string");
         config.put("string.resource.loader.description", "Velocity StringResource loader");
-        config.put("string.resource.loader.class", "org.apache.velocity.runtime.resource.loader.StringResourceLoader");
-        config.put("string.resource.loader.repository.class", "org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl");
+        config.put("string.resource.loader.class", StringResourceLoader.class.getName());
+        config.put("string.resource.loader.repository.class", StringResourceRepositoryImpl.class.getName());
         config.put("string.resource.loader.repository.name", VelocityTemplateEngine.class.getName());
 
         try {
@@ -92,7 +95,7 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
         // configure variables
         final VelocityContext context = new VelocityContext();
-        for (Map.Entry<String,? extends Object> entry: variables.entrySet()) {
+        for (Map.Entry<String, ? extends Object> entry : variables.entrySet()) {
             context.put(entry.getKey(), entry.getValue());
         }
 
