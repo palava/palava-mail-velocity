@@ -16,10 +16,9 @@
 
 package de.cosmocode.palava.mail.templating.velocity;
 
-import de.cosmocode.palava.mail.templating.LocalizedMailTemplate;
-import de.cosmocode.palava.mail.templating.MailAttachmentTemplate;
-import de.cosmocode.palava.mail.templating.TemplateEngine;
-import de.cosmocode.palava.mail.templating.TemplateException;
+import java.util.Map;
+import java.util.Properties;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
@@ -28,9 +27,10 @@ import org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.StringWriter;
-import java.util.Map;
-import java.util.Properties;
+import de.cosmocode.palava.mail.templating.LocalizedMailTemplate;
+import de.cosmocode.palava.mail.templating.MailAttachmentTemplate;
+import de.cosmocode.palava.mail.templating.TemplateEngine;
+import de.cosmocode.palava.mail.templating.TemplateException;
 
 /**
  * @author Tobias Sarnowski
