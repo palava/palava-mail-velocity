@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<name>Palava Mail Velocity</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<parent>
 		<artifactId>palava-parent</artifactId>
 		<groupId>de.cosmocode.palava</groupId>
@@ -10,7 +10,7 @@
 	<groupId>de.cosmocode.palava</groupId>
 	<artifactId>palava-mail-velocity</artifactId>
 	<scm>
-		<developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-mail-velocity/trunk</developerConnection>
+		<developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-mail-velocity/tags/0.1.0</developerConnection>
 	</scm>
 	<repositories>
 		<repository>
