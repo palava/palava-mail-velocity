@@ -22,8 +22,6 @@ import java.util.Set;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -35,10 +33,11 @@ import de.cosmocode.palava.mail.templating.TemplateEngine;
 import de.cosmocode.palava.mail.templating.TemplateException;
 
 /**
+ * A velocity based {@link LocalizedMailTemplate}.
+ * 
  * @author Tobias Sarnowski
  */
 public class ParsedMailTemplate implements LocalizedMailTemplate {
-    private static final Logger LOG = LoggerFactory.getLogger(ParsedMailTemplate.class);
 
     private String prefix;
     private LocalizedMailTemplate template;
@@ -49,15 +48,16 @@ public class ParsedMailTemplate implements LocalizedMailTemplate {
     private Set<MailAttachmentTemplate> embedded;
     private Set<MailAttachmentTemplate> attachments;
 
-
-    public ParsedMailTemplate(String prefix, LocalizedMailTemplate template, VelocityContext context) throws TemplateException {
+    public ParsedMailTemplate(String prefix, LocalizedMailTemplate template, VelocityContext context) 
+        throws TemplateException {
+        
         this.prefix = prefix;
         this.template = template;
         this.context = context;
 
         // prepare snippets
-        for (Map.Entry<String,String> snippetEntry: template.getSnippets().entrySet()) {
-            String snippet = parse(VelocityTemplateEngine.K_SNIPPETS + "/" + snippetEntry.getKey());
+        for (Map.Entry<String, String> snippetEntry : template.getSnippets().entrySet()) {
+            final String snippet = parse(VelocityTemplateEngine.K_SNIPPETS + "/" + snippetEntry.getKey());
             context.put(snippetEntry.getKey(), snippet);
         }
 
@@ -66,12 +66,15 @@ public class ParsedMailTemplate implements LocalizedMailTemplate {
         body = parse(VelocityTemplateEngine.K_BODY);
 
         embedded = Sets.newHashSet();
-        for (final MailAttachmentTemplate e: template.getEmbedded()) {
+        for (final MailAttachmentTemplate e : template.getEmbedded()) {
 
             final String embeddedName = parse(VelocityTemplateEngine.K_EMBEDDED + "/" + e.getName());
             final Map<String, String> configuration = Maps.newHashMap();
-            for (Map.Entry<String,String> c: e.getConfiguration().entrySet()) {
-                configuration.put(c.getKey(), parse(VelocityTemplateEngine.K_EMBEDDED + "/" + e.getName() + "/" + c.getKey()));
+            for (Map.Entry<String, String> c : e.getConfiguration().entrySet()) {
+                configuration.put(
+                    c.getKey(), 
+                    parse(VelocityTemplateEngine.K_EMBEDDED + "/" + e.getName() + "/" + c.getKey())
+                );
             }
 
             embedded.add(new MailAttachmentTemplate() {
@@ -93,12 +96,15 @@ public class ParsedMailTemplate implements LocalizedMailTemplate {
         }
 
         attachments = Sets.newHashSet();
-        for (final MailAttachmentTemplate a: template.getAttachments()) {
+        for (final MailAttachmentTemplate a : template.getAttachments()) {
 
             final String attachmentName = parse(VelocityTemplateEngine.K_EMBEDDED + "/" + a.getName());
             final Map<String, String> configuration = Maps.newHashMap();
-            for (Map.Entry<String,String> c: a.getConfiguration().entrySet()) {
-                configuration.put(c.getKey(), parse(VelocityTemplateEngine.K_EMBEDDED + "/" + a.getName() + "/" + c.getKey()));
+            for (Map.Entry<String, String> c : a.getConfiguration().entrySet()) {
+                configuration.put(
+                    c.getKey(), 
+                    parse(VelocityTemplateEngine.K_EMBEDDED + "/" + a.getName() + "/" + c.getKey())
+                );
             }
 
             embedded.add(new MailAttachmentTemplate() {
@@ -121,11 +127,13 @@ public class ParsedMailTemplate implements LocalizedMailTemplate {
     }
 
     private String parse(String key) throws TemplateException {
-        StringWriter sw = new StringWriter();
+        final StringWriter sw = new StringWriter();
         try {
             Velocity.mergeTemplate(prefix + key, VelocityTemplateEngine.ENCODING, context, sw);
             return sw.toString();
+        /* CHECKSTYLE:OFF */
         } catch (Exception e) {
+        /* CHECKSTYLE:ON */
             throw new TemplateException(e);
         }
     }
@@ -164,4 +172,5 @@ public class ParsedMailTemplate implements LocalizedMailTemplate {
     public Class<? extends TemplateEngine> getTemplateEngine() {
         return template.getTemplateEngine();
     }
+    
 }

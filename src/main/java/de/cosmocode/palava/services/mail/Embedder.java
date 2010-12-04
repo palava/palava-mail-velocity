@@ -26,13 +26,19 @@ import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A small helper class used inside templates to embed attachments.
+ * 
+ * @author Jesus Ortiz
+ */
 public class Embedder {
     
-    private static final Logger log = LoggerFactory.getLogger(Embedder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Embedder.class);
 
-    private final Map <String, String> embeddings = new HashMap<String, String>(); // mapping  path => cid
+    // mapping  path => cid
+    private final Map <String, String> embeddings = new HashMap<String, String>();
     private final List<String> filenames = new ArrayList<String>();
-    private int cidCount = 0;
+    private int cidCount;
     
     private final File resourcePath;
     
@@ -44,19 +50,32 @@ public class Embedder {
         this.resourcePath = new File(engine.getProperty("file.resource.loader.path").toString());
     }
     
-    public String image (String path)  {
+    /**
+     * Embeds an image at the specified path.
+     * 
+     * @param path the path
+     * @return the content id
+     */
+    public String image(String path) {
         String cid = embeddings.get(path);
 
         if (cid == null) {
-            setEmbedding(path, cid = generateCID());
-            log.debug("creating inline image; path=" + path + " cid=" + cid);
+            cid = generateCID();
+            setEmbedding(path, cid);
+            LOG.debug("creating inline image; path=" + path + " cid=" + cid);
         } else {
-            log.debug("reusing inline image; path=" +  path + " cid=" + cid);
+            LOG.debug("reusing inline image; path=" +  path + " cid=" + cid);
 
         }
         return cid;
     }
     
+    /**
+     * Provides the file name of the given path.
+     * 
+     * @param path the path
+     * @return the filename
+     */
     public String name(String path) {
         String fileName = null;
         String cid = null;
@@ -64,25 +83,29 @@ public class Embedder {
         cid = embeddings.get(path);
         
         if (cid == null) {
-            log.debug("Image " + path + " not embedded.");
+            LOG.debug("Image " + path + " not embedded.");
             return path;
         }
         
-        parts = path.split("/"); // to get the
-        fileName = parts[parts.length - 1]; // filename
+        parts = path.split("/");
+        fileName = parts[parts.length - 1];
         return fileName;
-        
     }
 
     private String generateCID() {
         cidCount++;
-        String cid = System.currentTimeMillis()+ "" + cidCount;
-        return cid;
+        return System.currentTimeMillis() + "" + cidCount;
     }
     
-    public void setEmbedding(String path, String cid){
-        String[] parts = path.split("/"); // to get the
-        String fileName = parts[parts.length - 1]; // filename
+    /**
+     * Sets an embedding at the specified path.
+     * 
+     * @param path the path
+     * @param cid the content id
+     */
+    public void setEmbedding(String path, String cid) {
+        final String[] parts = path.split("/");
+        final String fileName = parts[parts.length - 1];
         
         if (embeddings.get(path) == null && filenames.contains(fileName)) {
             throw new IllegalArgumentException(fileName + " was embedded twice from different paths");
@@ -96,6 +119,11 @@ public class Embedder {
         return embeddings;
     }
     
+    /**
+     * Checks whether this embedder has embeddings.
+     * 
+     * @return true if has embeddings, false otherwise
+     */
     public boolean hasEmbeddings() {
         return !embeddings.isEmpty();
     }

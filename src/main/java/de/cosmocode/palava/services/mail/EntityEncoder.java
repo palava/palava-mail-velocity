@@ -16,16 +16,27 @@
 
 package de.cosmocode.palava.services.mail;
 
-public class EntityEncoder {
+/**
+ * A small helper class used inside template to encode certain xml entities.
+ * 
+ * @author Willi Schoenborn
+ */
+public final class EntityEncoder {
 
-    private static final EntityEncoder instance = new EntityEncoder();
+    private static final EntityEncoder INSTANCE = new EntityEncoder();
     
     private EntityEncoder() {
         
     }
     
-    public String encode(String sourceString) {
-        return sourceString == null ? "" : sourceString.
+    /**
+     * Encodes the given string.
+     * 
+     * @param source the source string
+     * @return the encoded version
+     */
+    public String encode(String source) {
+        return source == null ? "" : source.
             replace("&",  "&amp;").
             replace(">",  "&gt;").
             replace("<",  "&lt;").
@@ -35,7 +46,7 @@ public class EntityEncoder {
     }
 
     public static EntityEncoder getInstance() {
-        return instance; 
+        return INSTANCE; 
     }
     
 }

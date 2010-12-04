@@ -37,12 +37,15 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import de.cosmocode.palava.core.lifecycle.Initializable;
+import de.cosmocode.palava.mail.templating.velocity.VelocityTemplateEngine;
 
 /**
  * Velocity based implementation of the {@link MailService} interface.
  *
+ * @deprecated in favor of {@link VelocityTemplateEngine}
  * @author Willi Schoenborn
  */
+@Deprecated
 final class VelocityMailService implements MailService, Initializable {
 
     private static final Locale NO_LOCALE = null;

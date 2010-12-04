@@ -36,12 +36,13 @@ import org.jdom.Element;
 /**
  * Creates org.apache.commons.mail.Email Objects from XML-Templates.
  * 
+ * @deprecated no need to use anymore
  * @author schoenborn@cosmocode.de
- *
  */
+@Deprecated
 class EmailFactory {
 
-    private static final EmailFactory instance = new EmailFactory();
+    private static final EmailFactory INSTANCE = new EmailFactory();
 
     private static final String CHARSET = "UTF-8";
     private static final String EMAIL_SEPARATOR = ";";
@@ -49,9 +50,13 @@ class EmailFactory {
     protected EmailFactory() {
         
     }
-    
+
+    /* CHECKSTYLE:OFF */
     @SuppressWarnings("unchecked")
-    public Email build(Document document, Embedder embed) throws EmailException, FileNotFoundException, MessagingException {
+    Email build(Document document, Embedder embed) throws EmailException, FileNotFoundException,
+        MessagingException {
+    /* CHECKSTYLE:ON */
+        
         final Element root = document.getRootElement();
         
         final List<Element> messages = root.getChildren("message");
@@ -64,7 +69,9 @@ class EmailFactory {
         for (Element element : messages) {
             final String type = element.getAttributeValue("type");
             final ContentType messageType = StringUtils.equals(type, "html") ? ContentType.HTML : ContentType.PLAIN;
-            if (available.containsKey(messageType)) throw new IllegalArgumentException("Two messages with the same types have been defined.");
+            if (available.containsKey(messageType)) {
+                throw new IllegalArgumentException("Two messages with the same types have been defined.");
+            }
             available.put(messageType, element.getText());
         }
         
@@ -217,7 +224,7 @@ class EmailFactory {
     }
     
     public static final EmailFactory getInstance() {
-        return instance;
+        return INSTANCE;
     }
     
 }

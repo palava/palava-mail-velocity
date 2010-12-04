@@ -24,8 +24,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.cosmocode.palava.mail.templating.LocalizedMailTemplate;
 import de.cosmocode.palava.mail.templating.MailAttachmentTemplate;
@@ -33,13 +31,12 @@ import de.cosmocode.palava.mail.templating.TemplateEngine;
 import de.cosmocode.palava.mail.templating.TemplateException;
 
 /**
+ * A velocity based {@link TemplateEngine}.
+ * 
  * @author Tobias Sarnowski
  */
-// FIXME should be package private and final
-public class VelocityTemplateEngine implements TemplateEngine {
-    private static final Logger LOG = LoggerFactory.getLogger(VelocityTemplateEngine.class);
+public final class VelocityTemplateEngine implements TemplateEngine {
 
-    // FIXME should be configurable
     public static final String ENCODING = "UTF-8";
 
     protected static final String K_SUBJECT = "subject";
@@ -51,7 +48,8 @@ public class VelocityTemplateEngine implements TemplateEngine {
     public VelocityTemplateEngine() {
         final Properties config = new Properties();
 
-        // see http://velocity.apache.org/engine/devel/apidocs/org/apache/velocity/runtime/resource/loader/StringResourceLoader.html
+        // see http://velocity.apache.org/engine/devel/apidocs/org/apache/velocity/
+        // runtime/resource/loader/StringResourceLoader.html
         config.put("resource.loader", "string");
         config.put("string.resource.loader.description", "Velocity StringResource loader");
         config.put("string.resource.loader.class", StringResourceLoader.class.getName());
@@ -60,32 +58,42 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
         try {
             Velocity.init(config);
+        /* CHECKSTYLE:OFF */
         } catch (Exception e) {
+        /* CHECKSTYLE:ON */
             throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public LocalizedMailTemplate generate(final LocalizedMailTemplate template, Map<String, ? extends Object> variables) throws TemplateException {
+    public LocalizedMailTemplate generate(LocalizedMailTemplate template, Map<String, ? extends Object> variables) 
+        throws TemplateException {
+        
         // generate template
-        final String NAME = "/" + template.getName() + "/";
-        StringResourceRepository repo = StringResourceLoader.getRepository(VelocityTemplateEngine.class.getName());
+        final String name = "/" + template.getName() + "/";
+        final StringResourceRepository repo = StringResourceLoader.getRepository(getClass().getName());
 
-        repo.putStringResource(NAME + K_SUBJECT, template.getSubject());
-        repo.putStringResource(NAME + K_BODY, template.getBody());
-        for (Map.Entry<String,String> snippet: template.getSnippets().entrySet()) {
-            repo.putStringResource(NAME + K_SNIPPETS + "/" + snippet.getKey(), snippet.getValue());
+        repo.putStringResource(name + K_SUBJECT, template.getSubject());
+        repo.putStringResource(name + K_BODY, template.getBody());
+        for (Map.Entry<String, String> snippet : template.getSnippets().entrySet()) {
+            repo.putStringResource(name + K_SNIPPETS + "/" + snippet.getKey(), snippet.getValue());
         }
-        for (MailAttachmentTemplate embedded: template.getEmbedded()) {
-            repo.putStringResource(NAME + K_EMBEDDED + "/" + embedded.getName(), embedded.getName());
-            for (Map.Entry<String,String> config: embedded.getConfiguration().entrySet()) {
-                repo.putStringResource(NAME + K_EMBEDDED + "/" + embedded.getName() + "/" + config.getKey(), config.getValue());
+        for (MailAttachmentTemplate embedded : template.getEmbedded()) {
+            repo.putStringResource(name + K_EMBEDDED + "/" + embedded.getName(), embedded.getName());
+            for (Map.Entry<String, String> config : embedded.getConfiguration().entrySet()) {
+                repo.putStringResource(
+                    name + K_EMBEDDED + "/" + embedded.getName() + "/" + config.getKey(), 
+                    config.getValue()
+                );
             }
         }
-        for (MailAttachmentTemplate attachment: template.getEmbedded()) {
-            repo.putStringResource(NAME + K_ATTACHMENTS + "/" + attachment.getName(), attachment.getName());
-            for (Map.Entry<String,String> config: attachment.getConfiguration().entrySet()) {
-                repo.putStringResource(NAME + K_ATTACHMENTS + "/" + attachment.getName() + "/" + config.getKey(), config.getValue());
+        for (MailAttachmentTemplate attachment : template.getEmbedded()) {
+            repo.putStringResource(name + K_ATTACHMENTS + "/" + attachment.getName(), attachment.getName());
+            for (Map.Entry<String, String> config : attachment.getConfiguration().entrySet()) {
+                repo.putStringResource(
+                    name + K_ATTACHMENTS + "/" + attachment.getName() + "/" + config.getKey(), 
+                    config.getValue()
+                );
             }
         }
 
@@ -95,6 +103,7 @@ public class VelocityTemplateEngine implements TemplateEngine {
             context.put(entry.getKey(), entry.getValue());
         }
 
-        return new ParsedMailTemplate(NAME, template, context);
+        return new ParsedMailTemplate(name, template, context);
     }
+    
 }

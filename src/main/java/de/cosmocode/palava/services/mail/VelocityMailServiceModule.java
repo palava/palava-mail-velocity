@@ -20,11 +20,15 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 
+import de.cosmocode.palava.mail.templating.velocity.VelocityTemplateEngine;
+
 /**
  * Binds the {@link MailService} to the {@link VelocityMailService}.
  *
+ * @deprecated use {@link VelocityTemplateEngine}
  * @author Willi Schoenborn
  */
+@Deprecated
 public final class VelocityMailServiceModule implements Module {
 
     @Override
