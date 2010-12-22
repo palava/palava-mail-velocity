@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.activation.FileDataSource;
-import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.Email;
@@ -53,8 +52,7 @@ class EmailFactory {
 
     /* CHECKSTYLE:OFF */
     @SuppressWarnings("unchecked")
-    Email build(Document document, Embedder embed) throws EmailException, FileNotFoundException,
-        MessagingException {
+    Email build(Document document, Embedder embed) throws EmailException, FileNotFoundException {
     /* CHECKSTYLE:ON */
         
         final Element root = document.getRootElement();
